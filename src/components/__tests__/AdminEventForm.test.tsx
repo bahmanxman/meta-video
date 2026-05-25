@@ -102,4 +102,16 @@ describe('AdminEventForm', () => {
     expect(screen.getByLabelText(/description/i)).toHaveValue('');
     expect(screen.getByLabelText(/timestamp/i)).toHaveValue(null);
   });
+
+  it('should display validation errors when submitting an empty form', async () => {
+    const user = userEvent.setup();
+    render(<AdminEventForm />);
+    
+    const submitButton = screen.getByRole('button', { name: /publish package/i });
+    await user.click(submitButton);
+    
+    expect(await screen.findByText(/title must be at least 5 characters/i)).toBeInTheDocument();
+    expect(screen.getByText(/match name is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/price must be at least/i)).toBeInTheDocument();
+  });
 });
