@@ -9,7 +9,10 @@ export type TimecodeEventDraft = {
 
 export function isTimecodeEventDraftValid(
   draft: TimecodeEventDraft,
-): draft is TimecodeEventDraft & { description: string; timestampSeconds: number } {
+): draft is TimecodeEventDraft & {
+  description: string;
+  timestampSeconds: number;
+} {
   return draft.description.trim() !== '' && draft.timestampSeconds !== '';
 }
 

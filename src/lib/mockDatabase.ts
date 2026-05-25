@@ -7,9 +7,10 @@ export const initialVideos: VideoAsset[] = [
     title: 'Borussia Dortmund vs. Eintracht Frankfurt - Match Highlights',
     matchName: 'Dortmund vs Frankfurt',
     date: '2026-05-24',
-    price: 450.00,
+    price: 450.0,
     thumbnailUrl: '/thumbnails/match-1.jpg',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // Reliable public stream asset
+    videoUrl:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     events: [
       {
         id: 'e1',
@@ -17,10 +18,10 @@ export const initialVideos: VideoAsset[] = [
         formattedTimecode: '00:00:42',
         type: 'GOAL',
         description: 'Stunning opening volley into the top right corner',
-        team: 'Borussia Dortmund'
-      }
-    ]
-  }
+        team: 'Borussia Dortmund',
+      },
+    ],
+  },
 ];
 
 // Globally accessible memory store simulating our database read/write cycles locally
@@ -28,12 +29,12 @@ export let mockDatabase: VideoAsset[] = [...initialVideos];
 
 export const databaseActions = {
   getAll: () => mockDatabase,
-  getById: (id: string) => mockDatabase.find(v => v.id === id),
+  getById: (id: string) => mockDatabase.find((v) => v.id === id),
   insert: (video: VideoAsset) => {
     mockDatabase.push(video);
     return video;
   },
   reset: () => {
     mockDatabase = [...initialVideos];
-  }
+  },
 };

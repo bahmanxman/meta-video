@@ -3,7 +3,7 @@
 import {
   submitMediaPackageForm,
   type MediaPackageFormState,
-} from '@/src/lib/schemas';
+} from '@/lib/schemas';
 
 export async function createMediaPackage(
   prevState: MediaPackageFormState,

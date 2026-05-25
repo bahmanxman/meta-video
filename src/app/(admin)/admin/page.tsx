@@ -1,4 +1,4 @@
-import { AdminEventForm } from '@/src/components/AdminEventForm';
+import { AdminEventForm } from '@/components/AdminEventForm';
 
 export default function AdminPage() {
   return (

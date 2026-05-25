@@ -2,8 +2,8 @@
 
 import { useActionState, useEffect, useId, useState, type ChangeEvent } from 'react';
 
-import { createMediaPackage } from '@/src/app/actions';
-import type { MediaPackageFormState } from '@/src/lib/schemas';
+import { createMediaPackage } from '@/app/actions';
+import type { MediaPackageFormState } from '@/lib/schemas';
 
 import { createAdminEventFormFieldIds } from './admin-event-form/form-field-ids';
 import { EventTypeSelector } from './admin-event-form/EventTypeSelector';

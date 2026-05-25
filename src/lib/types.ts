@@ -1,4 +1,9 @@
-export type MatchEventType = 'GOAL' | 'YELLOW_CARD' | 'RED_CARD' | 'SUBSTITUTION' | 'HIGHLIGHT';
+export type MatchEventType =
+  | 'GOAL'
+  | 'YELLOW_CARD'
+  | 'RED_CARD'
+  | 'SUBSTITUTION'
+  | 'HIGHLIGHT';
 
 export interface TimecodeEvent {
   id: string;
