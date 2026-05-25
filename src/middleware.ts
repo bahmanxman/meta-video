@@ -8,9 +8,9 @@ import {
 export async function middleware(request: NextRequest) {
   const session = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
 
- /*  if (!(await isAdminSessionValid(session))) {
+  if (!(await isAdminSessionValid(session))) {
     return NextResponse.redirect(new URL('/login', request.url));
-  } */
+  }
 
   return NextResponse.next();
 }
