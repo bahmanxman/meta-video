@@ -25,6 +25,7 @@ type TextFieldProps = {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  error?: string;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'value' | 'onChange'>;
 
 export function TextField({
@@ -34,6 +35,7 @@ export function TextField({
   onChange,
   type = 'text',
   className,
+  error,
   ...inputProps
 }: TextFieldProps) {
   return (
@@ -44,8 +46,15 @@ export function TextField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={inputClassName}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
         {...inputProps}
       />
+      {error ? (
+        <p id={`${id}-error`} className="mt-1 text-xs text-red-500">
+          {error}
+        </p>
+      ) : null}
     </FormField>
   );
 }
@@ -55,6 +64,7 @@ type NumberFieldProps = {
   label: string;
   value: number | '';
   onChange: (value: number | '') => void;
+  error?: string;
 } & Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'id' | 'type' | 'value' | 'onChange'
@@ -68,6 +78,7 @@ export function NumberField({
   min = 0,
   step,
   className,
+  error,
   ...inputProps
 }: NumberFieldProps) {
   return (
@@ -82,8 +93,15 @@ export function NumberField({
           onChange(e.target.value === '' ? '' : Number(e.target.value))
         }
         className={inputClassName}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
         {...inputProps}
       />
+      {error ? (
+        <p id={`${id}-error`} className="mt-1 text-xs text-red-500">
+          {error}
+        </p>
+      ) : null}
     </FormField>
   );
 }

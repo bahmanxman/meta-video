@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useId, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useActionState, useEffect, useId, useState, type ChangeEvent } from 'react';
+
+import { createMediaPackage } from '@/src/app/actions';
+import type { MediaPackageFormState } from '@/src/lib/schemas';
 
 import { createAdminEventFormFieldIds } from './admin-event-form/form-field-ids';
 import { EventTypeSelector } from './admin-event-form/EventTypeSelector';
@@ -14,10 +17,16 @@ import {
 import { useAdminEventForm } from './admin-event-form/useAdminEventForm';
 import { VideoFileUpload } from './admin-event-form/VideoFileUpload';
 
+const initialFormState: MediaPackageFormState = { success: false };
+
 export function AdminEventForm() {
   const formId = useId();
   const ids = createAdminEventFormFieldIds(formId);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [state, formAction, isPending] = useActionState(
+    createMediaPackage,
+    initialFormState,
+  );
   const {
     asset,
     eventDraft,
@@ -53,31 +62,30 @@ export function AdminEventForm() {
     }
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    // Catalog persistence will wire here via a server action.
-  }
-
   return (
     <form
+      action={formAction}
       aria-labelledby={ids.headingId}
-      onSubmit={handleSubmit}
       className="space-y-6"
     >
       <h2 id={ids.headingId} className="sr-only">
         Admin Logging Workspace
       </h2>
 
+      <input type="hidden" name="videoUrl" value={videoUrl ?? ''} />
+
       <div
         className={`grid gap-6 ${videoUrl ? 'lg:grid-cols-2 lg:items-start' : ''}`}
       >
-        {/* Left: upload + live preview */}
         <div className={`${cardClassName} space-y-4`}>
           <VideoFileUpload
             id={ids.videoFileId}
             onChange={handleVideoInputChange}
             onFileSelect={applyVideoFile}
           />
+          {state.errors?.videoUrl?.[0] ? (
+            <p className="text-xs text-red-500">{state.errors.videoUrl[0]}</p>
+          ) : null}
 
           {videoUrl ? (
             <div>
@@ -97,7 +105,6 @@ export function AdminEventForm() {
           )}
         </div>
 
-        {/* Right: asset + timecode workspace */}
         <div className="space-y-6">
           <fieldset className={`${cardClassName} space-y-4`}>
             <legend className="mb-1 px-1 text-sm font-semibold uppercase tracking-wider text-blue-400">
@@ -106,27 +113,39 @@ export function AdminEventForm() {
 
             <TextField
               id={ids.titleId}
+              name="title"
               label="Asset title"
               placeholder="e.g. Der Klassiker — Extended Highlights"
               value={asset.assetTitle}
-              onChange={(value) => updateAsset('assetTitle', value)}
+              onChange={(value) => {
+                updateAsset('assetTitle', value);
+              }}
+              error={state.errors?.title?.[0]}
             />
 
             <TextField
               id={ids.matchId}
+              name="matchName"
               label="Match name"
               placeholder="e.g. Bayern München vs Borussia Dortmund"
               value={asset.matchName}
-              onChange={(value) => updateAsset('matchName', value)}
+              onChange={(value) => {
+                updateAsset('matchName', value);
+              }}
+              error={state.errors?.matchName?.[0]}
             />
 
             <NumberField
               id={ids.priceId}
+              name="price"
               label="Price"
               step={0.01}
               placeholder="0.00"
               value={asset.price}
-              onChange={(value) => updateAsset('price', value)}
+              onChange={(value) => {
+                updateAsset('price', value);
+              }}
+              error={state.errors?.price?.[0]}
             />
           </fieldset>
 
@@ -146,7 +165,9 @@ export function AdminEventForm() {
               label="Description"
               placeholder="Describe the match moment for broadcast partners"
               value={eventDraft.description}
-              onChange={(value) => updateEventDraft('description', value)}
+              onChange={(value) => {
+                updateEventDraft('description', value);
+              }}
             />
 
             <NumberField
@@ -154,7 +175,9 @@ export function AdminEventForm() {
               label="Timestamp (seconds)"
               placeholder="0"
               value={eventDraft.timestampSeconds}
-              onChange={(value) => updateEventDraft('timestampSeconds', value)}
+              onChange={(value) => {
+                updateEventDraft('timestampSeconds', value);
+              }}
             />
 
             <button
@@ -166,9 +189,19 @@ export function AdminEventForm() {
             </button>
           </fieldset>
 
-          <button type="submit" className={primaryButtonClassName}>
-            Submit asset to catalog
+          <button
+            type="submit"
+            disabled={isPending}
+            className={primaryButtonClassName}
+          >
+            {isPending ? 'Publishing...' : 'Publish package'}
           </button>
+
+          {state.success ? (
+            <p className="text-center text-sm font-medium text-emerald-400">
+              Media package published to the catalog.
+            </p>
+          ) : null}
         </div>
       </div>
 
