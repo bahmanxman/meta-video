@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import {
   ADMIN_SESSION_COOKIE,
@@ -41,6 +42,8 @@ export async function loginAdmin(
     path: '/',
     maxAge: SESSION_MAX_AGE_SECONDS,
   });
+
+  redirect('/admin');
 
   return { success: true };
 }
