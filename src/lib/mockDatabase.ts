@@ -32,6 +32,7 @@ export const databaseActions = {
   getById: (id: string) => mockDatabase.find((v) => v.id === id),
   insert: (video: VideoAsset) => {
     mockDatabase.push(video);
+    console.log('mockDatabase', mockDatabase);
     return video;
   },
   reset: () => {

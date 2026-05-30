@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 import { databaseActions } from '@/lib/mockDatabase';
@@ -53,6 +54,7 @@ export async function submitMediaPackageForm(
   };
 
   databaseActions.insert(asset);
+  revalidatePath('/');
 
   return { success: true };
 }
