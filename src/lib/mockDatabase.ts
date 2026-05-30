@@ -1,41 +1,23 @@
-import { VideoAsset } from './types';
+import { readDatabase, writeDatabase } from './database-storage';
+import { initialVideos } from './seed-videos';
+import type { VideoAsset } from './types';
 
-// Seed data to make sure the catalog isn't empty when you first open it
-export const initialVideos: VideoAsset[] = [
-  {
-    id: 'bvb-sge-2026',
-    title: 'Borussia Dortmund vs. Eintracht Frankfurt - Match Highlights',
-    matchName: 'Dortmund vs Frankfurt',
-    date: '2026-05-24',
-    price: 450.0,
-    thumbnailUrl: '/thumbnails/match-1.jpg',
-    videoUrl:
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    events: [
-      {
-        id: 'e1',
-        timestampSeconds: 42,
-        formattedTimecode: '00:00:42',
-        type: 'GOAL',
-        description: 'Stunning opening volley into the top right corner',
-        team: 'Borussia Dortmund',
-      },
-    ],
-  },
-];
-
-// Globally accessible memory store simulating our database read/write cycles locally
-export let mockDatabase: VideoAsset[] = [...initialVideos];
+export { initialVideos } from './seed-videos';
 
 export const databaseActions = {
-  getAll: () => mockDatabase,
-  getById: (id: string) => mockDatabase.find((v) => v.id === id),
-  insert: (video: VideoAsset) => {
-    mockDatabase.push(video);
-    console.log('mockDatabase', mockDatabase);
+  getAll: (): VideoAsset[] => readDatabase(),
+
+  getById: (id: string): VideoAsset | undefined =>
+    readDatabase().find((video) => video.id === id),
+
+  insert: (video: VideoAsset): VideoAsset => {
+    const database = readDatabase();
+    database.push(video);
+    writeDatabase(database);
     return video;
   },
-  reset: () => {
-    mockDatabase = [...initialVideos];
+
+  reset: (): void => {
+    writeDatabase([...initialVideos]);
   },
 };

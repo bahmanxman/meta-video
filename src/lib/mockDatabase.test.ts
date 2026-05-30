@@ -1,7 +1,8 @@
+import fs from 'node:fs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { VideoAsset } from './types';
-import { databaseActions, initialVideos, mockDatabase } from './mockDatabase';
+import { databaseActions, initialVideos } from './mockDatabase';
 
 describe('mockDatabase', () => {
   beforeEach(() => {
@@ -32,7 +33,7 @@ describe('mockDatabase', () => {
   });
 
   describe('databaseActions.insert()', () => {
-    it('appends the asset to the reference array and returns the inserted object', () => {
+    it('appends the asset to the database and returns the inserted object', () => {
       const newAsset: VideoAsset = {
         id: 'bayern-leipzig-2026',
         title: 'Bayern München vs RB Leipzig - Highlights',
@@ -48,7 +49,23 @@ describe('mockDatabase', () => {
 
       expect(inserted).toEqual(newAsset);
       expect(databaseActions.getAll()).toHaveLength(initialVideos.length + 1);
-      expect(mockDatabase.at(-1)?.id).toBe('bayern-leipzig-2026');
+      expect(databaseActions.getById('bayern-leipzig-2026')).toEqual(newAsset);
+    });
+
+    it('persists inserted assets to disk', () => {
+      databaseActions.insert({
+        id: 'persisted-asset',
+        title: 'Persisted Match Highlights',
+        matchName: 'Persisted vs Disk',
+        date: '2026-06-03',
+        price: 120,
+        thumbnailUrl: '/thumbnails/persisted.jpg',
+        videoUrl: 'https://example.com/persisted.mp4',
+        events: [],
+      });
+
+      const raw = fs.readFileSync(process.env.MOCK_DB_PATH!, 'utf-8');
+      expect(raw).toContain('persisted-asset');
     });
   });
 
