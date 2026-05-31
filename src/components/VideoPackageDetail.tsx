@@ -51,6 +51,13 @@ export function VideoPackageDetail({ video }: VideoPackageDetailProps) {
               {formatPrice(video.price)}
             </span>
           </div>
+
+          <button
+            type="button"
+            className="mt-6 inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-zinc-950"
+          >
+            Purchase package
+          </button>
         </header>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
@@ -58,6 +65,7 @@ export function VideoPackageDetail({ video }: VideoPackageDetailProps) {
             <div className="relative aspect-video w-full bg-zinc-800">
               {isStreamableVideoUrl(video.videoUrl) ? (
                 <video
+                  aria-label="Package preview"
                   controls
                   className="h-full w-full bg-black object-contain"
                   src={video.videoUrl}
@@ -67,7 +75,7 @@ export function VideoPackageDetail({ video }: VideoPackageDetailProps) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={video.thumbnailUrl}
-                  alt=""
+                  alt="Package preview"
                   className="h-full w-full object-cover"
                 />
               ) : (

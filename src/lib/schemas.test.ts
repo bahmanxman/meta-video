@@ -181,7 +181,7 @@ describe('submitMediaPackageForm', () => {
       matchName: 'Bayern München vs Borussia Dortmund',
       price: 525.5,
       videoUrl: 'blob:http://localhost/preview-123',
-      thumbnailUrl: '/thumbnails/placeholder.jpg',
+      thumbnailUrl: '/thumbnails/bundesliga-placeholer.png',
       events: [],
     });
     expect(inserted?.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);

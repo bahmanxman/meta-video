@@ -73,6 +73,7 @@ export function AdminEventForm() {
       </h2>
 
       <input type="hidden" name="videoUrl" value={videoUrl ?? ''} />
+      <input type="hidden" name="events" value={JSON.stringify(events)} />
 
       <div
         className={`grid gap-6 ${videoUrl ? 'lg:grid-cols-2 lg:items-start' : ''}`}

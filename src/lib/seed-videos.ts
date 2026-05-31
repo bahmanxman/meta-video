@@ -8,7 +8,7 @@ export const initialVideos: VideoAsset[] = [
     matchName: 'Dortmund vs Frankfurt',
     date: '2026-05-24',
     price: 450.0,
-    thumbnailUrl: '/thumbnails/match-1.jpg',
+    thumbnailUrl: '/thumbnails/bundesliga-placeholer.png',
     videoUrl:
       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     events: [
