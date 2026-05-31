@@ -2,7 +2,7 @@ export const labelClassName =
   'mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-400';
 
 export const inputClassName =
-  'w-full rounded-lg border border-zinc-700 bg-zinc-900/80 px-3 py-2.5 text-sm text-zinc-100 shadow-inner placeholder:text-zinc-500 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40';
+  'rounded-lg border border-zinc-700 bg-zinc-900/80 px-3 py-2.5 text-sm text-zinc-100 shadow-inner placeholder:text-zinc-500 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40';
 
 export const cardClassName =
   'rounded-xl border border-zinc-800 bg-zinc-900/60 p-5 shadow-lg shadow-black/20';

@@ -76,7 +76,7 @@ export function AdminEventForm() {
       <input type="hidden" name="events" value={JSON.stringify(events)} />
 
       <div
-        className={`grid gap-6 ${videoUrl ? 'lg:grid-cols-2 lg:items-start' : ''}`}
+        className="grid gap-6 lg:grid-cols-2 lg:items-start"
       >
         <div className={`${cardClassName} space-y-4`}>
           <VideoFileUpload
