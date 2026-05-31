@@ -10,7 +10,7 @@ describe('VideoPackageDetail', () => {
     databaseActions.reset();
   });
 
-  it('renders package metadata and highlight markers from the database', () => {
+  function renderSeedVideo() {
     const video = databaseActions.getById('bvb-sge-2026');
 
     if (!video) {
@@ -19,14 +19,54 @@ describe('VideoPackageDetail', () => {
 
     render(<VideoPackageDetail video={video} />);
 
+    return video;
+  }
+
+  it('renders the package title', () => {
+    const video = renderSeedVideo();
+
     expect(
       screen.getByRole('heading', {
-        name: /Borussia Dortmund vs. Eintracht Frankfurt/i,
+        level: 1,
+        name: video.title,
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Dortmund vs Frankfurt/i)).toBeInTheDocument();
+  });
+
+  it('renders the formatted package price', () => {
+    renderSeedVideo();
+
     expect(screen.getByText(/€450/i)).toBeInTheDocument();
+  });
+
+  it('renders a thumbnail preview for the package', () => {
+    const video = renderSeedVideo();
+
+    const preview = screen.getByLabelText(/package preview/i);
+    expect(preview).toHaveAttribute('poster', video.thumbnailUrl);
+  });
+
+  it('renders at least one highlight event', () => {
+    renderSeedVideo();
+
     expect(screen.getByText(/GOAL/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Stunning opening volley into the top right corner/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/1 event/i)).toBeInTheDocument();
+  });
+
+  it('renders a purchase button', () => {
+    renderSeedVideo();
+
+    expect(
+      screen.getByRole('button', { name: /purchase package/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders navigation back to the catalog', () => {
+    renderSeedVideo();
+
     expect(
       screen.getByRole('link', { name: /back to catalog/i }),
     ).toHaveAttribute('href', '/');
