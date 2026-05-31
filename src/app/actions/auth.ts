@@ -47,3 +47,9 @@ export async function loginAdmin(
 
   return { success: true };
 }
+
+export async function logoutAdmin(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.delete(ADMIN_SESSION_COOKIE);
+  redirect('/');
+}

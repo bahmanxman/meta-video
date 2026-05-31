@@ -1,8 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import { MainNav } from '@/components/MainNav';
+
+vi.mock('@/app/actions/auth', () => ({
+  logoutAdmin: vi.fn(),
+}));
 
 describe('MainNav', () => {
   it('renders a home link that navigates to the catalog page', () => {
@@ -52,13 +56,18 @@ describe('MainNav', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('always renders exactly two navigation actions', () => {
-    const { rerender } = render(<MainNav isAuthenticated={false} />);
+  it('renders two links when the user is not authenticated', () => {
+    render(<MainNav isAuthenticated={false} />);
 
     expect(screen.getAllByRole('link')).toHaveLength(2);
+  });
 
-    rerender(<MainNav isAuthenticated={true} />);
+  it('renders two links and a logout button when the user is authenticated', () => {
+    render(<MainNav isAuthenticated={true} />);
 
     expect(screen.getAllByRole('link')).toHaveLength(2);
+    expect(
+      screen.getByRole('button', { name: /logout/i }),
+    ).toBeInTheDocument();
   });
 });
